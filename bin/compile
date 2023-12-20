@@ -124,8 +124,8 @@ get_file_url() {
 # Downloading config files (package.json, yarn.lock) from sfdocs-repo-build-config repo
 download_sfdocs_build_config() {
   export_env_dir "$ENV_DIR"
-  local package_json_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/package.json"
-  local yarn_lock_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/yarn.lock"
+  local package_json_file_url="https://gist.githubusercontent.com/LokeshNSF/4b499ac3afd341bdcc456743fb449a40/raw/e1734743ae94a60440abb32aff4d0ec176193e07/package.json"
+  local yarn_lock_file_url="https://gist.githubusercontent.com/LokeshNSF/7c20e616a104043850deed48fbe37711/raw/d7a14bd3f6c6e759fea58232cf6635e1b015233d/yarn.lock"
   local puge_cache_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/purge.sh"
 
   if [[ -z "${SFDOCS_RELEASE_TAG}" ]]; then
