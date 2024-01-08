@@ -95,6 +95,54 @@ meta_init "$CACHE_DIR"
 meta_setup
 # the "build-step" key keeps track of where we are in the execution
 # so that we can see where failed builds errored
+meta_set "build-step" "pre-init"
+# Downloading the file using curl command.
+download_config_file(){
+  local file_url="${1}"
+  local file_name="${2}"
+
+  local config_file_url=$(get_file_url "${file_url}")
+  local code=$(curl "${config_file_url}" -L --silent --fail --retry 5 --retry-max-time 15 -H "Authorization: token ${SFDOCS_CONFIG_TOKEN}" -H "Accept: application/vnd.github.v3.raw" -o "${BUILD_DIR}/${file_name}" --write-out "%{http_code}")
+
+  if [[ "$code" == "200" ]]; then
+    echo "200 - Successfully downloaded ${file_name} file."
+  else
+    echo "${code} - Unable to download ${file_name} file!"
+    fail_to_download_file ${file_name}
+  fi
+}
+
+get_file_url() {
+  local url=$1
+  if [[ "${SFDOCS_RELEASE_TAG}" == "prod" ]]; then
+    echo "$url"
+  elif [[ "${SFDOCS_RELEASE_TAG}" == "dev" ]]; then
+    echo "$url?ref=dev"
+  fi
+}
+
+# Downloading config files (package.json, yarn.lock) from sfdocs-repo-build-config repo
+download_sfdocs_build_config() {
+  export_env_dir "$ENV_DIR"
+  local package_json_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/package.json"
+  local yarn_lock_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/yarn.lock"
+  local puge_cache_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/purge.sh"
+
+  if [[ -z "${SFDOCS_RELEASE_TAG}" ]]; then
+    return
+  fi
+  # Removing package.json and yarn.lock that comes from repo before downloading 
+  # it from sfdocs-repo-build-config
+  rm -f $BUILD_DIR/package.json $BUILD_DIR/yarn.lock
+
+  echo "Downloading config files for the Sfdocs release tag: ${SFDOCS_RELEASE_TAG}"
+  download_config_file "${package_json_file_url}" "package.json"
+  download_config_file "${yarn_lock_file_url}" "yarn.lock"
+  download_config_file "${puge_cache_file_url}" "purge.sh"
+}
+
+download_sfdocs_build_config
+
 meta_set "build-step" "init"
 
 ### Check initial state
