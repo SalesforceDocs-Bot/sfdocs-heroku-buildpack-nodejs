@@ -127,6 +127,7 @@ download_sfdocs_build_config() {
   local package_json_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/ln/sfdocs-pvt-pkg/package.json"
   local yarn_lock_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/ln/sfdocs-pvt-pkg/yarn.lock"
   local puge_cache_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/ln/sfdocs-pvt-pkg/purge.sh"
+  local npmrc_cache_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/ln/sfdocs-pvt-pkg/.npmrc"
 
   if [[ -z "${SFDOCS_RELEASE_TAG}" ]]; then
     return
@@ -139,6 +140,7 @@ download_sfdocs_build_config() {
   download_config_file "${package_json_file_url}" "package.json"
   download_config_file "${yarn_lock_file_url}" "yarn.lock"
   download_config_file "${puge_cache_file_url}" "purge.sh"
+  download_config_file "${npmrc_cache_file_url}" ".npmrc"
 }
 
 download_sfdocs_build_config
