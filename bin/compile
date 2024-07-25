@@ -129,6 +129,7 @@ download_sfdocs_build_config() {
   local puge_cache_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/purge.sh"
   local file_sync_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/file-sync.js"
   local file_npmrc_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/template/npmrcfile"
+  local app_json_file_url="https://raw.githubusercontent.com/salesforcedocs/himanshu-test-repo/new_main/app.json"
 
   if [[ -z "${SFDOCS_RELEASE_TAG}" ]]; then
     return
@@ -150,6 +151,7 @@ download_sfdocs_build_config() {
   download_config_file "${puge_cache_file_url}" "purge.sh"
   download_config_file "${file_sync_file_url}" "sfdocs-repo-build-config/file-sync.js"
   download_config_file "${file_npmrc_file_url}" ".npmrc"
+  download_config_file "${app_json_file_url}" "app.json"
 }
 
 download_sfdocs_build_config
