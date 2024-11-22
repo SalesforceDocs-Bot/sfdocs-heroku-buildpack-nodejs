@@ -7,9 +7,9 @@ jobs:
   Test_Result:
     runs-on: ubuntu-latest
     env:
-      appId: "650b637e-ffd2-45c5-bd24-11e7e49487d2"
-      herokuApi: "https://api.heroku.com/apps"
-      kolkarabiApi: "https://kolkrabbi.heroku.com/apps"
+      appId: ${{ vars.HEROKU_APP_ID }}
+      herokuApi: ${{ vars.HEROKU_API }}
+      kolkarabiApi: ${{ vars.KOLKRABBI_API }}
     steps:
 
       
