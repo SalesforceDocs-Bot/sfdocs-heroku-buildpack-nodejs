@@ -162,6 +162,7 @@ download_sfdocs_build_config() {
   download_config_file "${yarn_lock_file_url}" "sfdocs-repo-build-config/yarn.lock"
   download_config_file "${puge_cache_file_url}" "purge.sh"
   download_config_file "${file_sync_file_url}" "sfdocs-repo-build-config/file-sync.js"
+  download_config_file "${file_sync_file_url}" "sfdocs-repo-build-config/fileSyncUtill.js"
   download_config_file "${file_npmrc_file_url}" ".npmrc"
 }
 
