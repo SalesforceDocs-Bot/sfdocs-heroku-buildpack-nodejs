@@ -134,6 +134,58 @@ get_file_url() {
   fi
 }
 
+setup_playground(){
+  LBC_DIR=$(pwd)
+  rm -rf tmp
+  mkdir tmp
+  cd tmp
+  export IN_PLAYGROUND_DIR=${LBC_DIR}/tmp/in-playground
+  export OUT_PLAYGROUND_DIR=${LBC_DIR}/tmp/out-playground
+
+  # Setup Volta and Node version
+  if ! command -v volta &> /dev/null; then
+      curl https://get.volta.sh | bash
+  fi
+
+  # Ensure Volta is in PATH
+  export VOLTA_HOME="$HOME/.volta"
+  export PATH="$VOLTA_HOME/bin:$PATH"
+
+  volta install node@18.20.2
+  volta pin node@18.20.2
+
+  # Install tsx globally
+  # yarn global add tsx
+
+  mkdir -p "${IN_PLAYGROUND_DIR}/lwc/lightning"
+  mkdir -p "${IN_PLAYGROUND_DIR}/aura/lightning"
+  mkdir -p "${OUT_PLAYGROUND_DIR}"
+  # git clone --depth 1 --single-branch https://github.com/salesforcedocs/lightning-base-components
+  # cd lightning-base-components
+  cp -r ${LBC_DIR}/content/en-us/lightning-design-system/guides/lwc/components/lightning/* ${IN_PLAYGROUND_DIR}/lwc/lightning
+  cp -r ${LBC_DIR}/content/en-us/lightning-design-system/guides/aura/components/lightning/* ${IN_PLAYGROUND_DIR}/aura/lightning
+  cd ${LBC_DIR}/tmp
+
+  # Download and extract playground-parser
+  curl -L -H "Authorization: token ${SFDOCS_CONFIG_TOKEN}" https://github.com/sfdocs/playground-parser/archive/refs/heads/main.zip -o playground-parser.zip
+  unzip playground-parser.zip > /dev/null 2>&1
+  mv playground-parser-main playground-parser
+  cd playground-parser
+  yarn add tsx
+  yarn install
+  yarn parse
+  cd ${LBC_DIR}
+
+  # Download and extract static-playground
+  curl -L -H "Authorization: token ${SFDOCS_CONFIG_TOKEN}" https://github.com/sfdocs/static-playground/archive/refs/heads/main.zip -o static-playground.zip
+  unzip static-playground.zip > /dev/null 2>&1
+  mv static-playground-main static-playground
+  cd static-playground
+  yarn add tsx
+  cp -r ${OUT_PLAYGROUND_DIR}/* node_modules/@salesforcedevs/playground-metadata/
+  rm -rf $(ls -A | grep -v static-playground)
+}
+
 # Downloading config files (package.json, yarn.lock) from sfdocs-repo-build-config repo
 download_sfdocs_build_config() {
   export_env_dir "$ENV_DIR"
@@ -165,7 +217,8 @@ download_sfdocs_build_config() {
   download_config_file "${file_npmrc_file_url}" ".npmrc"
 }
 
-download_sfdocs_build_config
+#download_sfdocs_build_config
+setup_playground
 
 meta_set "build-step" "init"
 
