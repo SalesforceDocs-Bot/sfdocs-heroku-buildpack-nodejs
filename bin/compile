@@ -142,17 +142,17 @@ setup_playground(){
   export IN_PLAYGROUND_DIR=${LBC_DIR}/tmp/in-playground
   export OUT_PLAYGROUND_DIR=${LBC_DIR}/tmp/out-playground
 
-  # Setup Volta and Node version
-  if ! command -v volta &> /dev/null; then
-      curl https://get.volta.sh | bash
-  fi
+  # # Setup Volta and Node version
+  # if ! command -v volta &> /dev/null; then
+  #     curl https://get.volta.sh | bash
+  # fi
 
-  # Ensure Volta is in PATH
-  export VOLTA_HOME="$HOME/.volta"
-  export PATH="$VOLTA_HOME/bin:$PATH"
+  # # Ensure Volta is in PATH
+  # export VOLTA_HOME="$HOME/.volta"
+  # export PATH="$VOLTA_HOME/bin:$PATH"
 
-  volta install node@18.20.2
-  volta pin node@18.20.2
+  # volta install node@18.20.2
+  # volta pin node@18.20.2
 
   # Install tsx globally
   # yarn global add tsx
