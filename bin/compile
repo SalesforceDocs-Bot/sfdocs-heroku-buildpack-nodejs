@@ -183,6 +183,7 @@ setup_playground(){
   mv static-playground-main/{.*,*} .
   yarn add tsx
   cp -r ${OUT_PLAYGROUND_DIR}/* node_modules/@salesforcedevs/playground-metadata/
+  rm -rf tmp
 }
 
 # Downloading config files (package.json, yarn.lock) from sfdocs-repo-build-config repo
