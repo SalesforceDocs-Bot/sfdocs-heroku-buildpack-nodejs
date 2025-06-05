@@ -218,7 +218,6 @@ download_sfdocs_build_config() {
 }
 
 #download_sfdocs_build_config
-setup_playground
 
 meta_set "build-step" "init"
 
@@ -324,9 +323,9 @@ export YARN_CACHE_FOLDER NPM_CONFIG_CACHE
 install_bins() {
   local node_engine npm_engine yarn_engine npm_version node_version
 
-  node_engine=$(read_json "$BUILD_DIR/package.json" ".engines.node")
+  node_engine='>=18.18.0 <19.0.0'
   npm_engine=$(read_json "$BUILD_DIR/package.json" ".engines.npm")
-  yarn_engine=$(read_json "$BUILD_DIR/package.json" ".engines.yarn")
+  yarn_engine='>=1.22.19 <=1.22.22'
 
   meta_set "node-version-request" "$node_engine"
   meta_set "npm-version-request" "$npm_engine"
@@ -376,6 +375,8 @@ install_bins() {
 
 header "Installing binaries" | output "$LOG_FILE"
 install_bins | output "$LOG_FILE"
+
+setup_playground
 
 if [[ -z "$USE_NPM_INSTALL" ]]; then
   if [[ "$(should_use_npm_ci "$BUILD_DIR")" == "true" ]]; then
