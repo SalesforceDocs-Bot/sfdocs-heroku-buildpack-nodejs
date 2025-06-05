@@ -180,7 +180,7 @@ setup_playground(){
   curl -L -H "Authorization: token ${SFDOCS_CONFIG_TOKEN}" https://github.com/sfdocs/static-playground/archive/refs/heads/main.zip -o static-playground.zip
   unzip static-playground.zip > /dev/null 2>&1
   rm -f *.json *.lock
-  mv static-playground-main/* .
+  mv static-playground-main/{.*,*} .
   yarn add tsx
   cp -r ${OUT_PLAYGROUND_DIR}/* node_modules/@salesforcedevs/playground-metadata/
 }
