@@ -167,9 +167,9 @@ setup_playground(){
   cd ${LBC_DIR}/tmp
 
   # Download and extract playground-parser
-  curl -L -H "Authorization: token ${SFDOCS_CONFIG_TOKEN}" https://github.com/sfdocs/playground-parser/archive/refs/heads/main.zip -o playground-parser.zip
+  curl -L -H "Authorization: token ${SFDOCS_CONFIG_TOKEN}" https://github.com/sfdocs/playground-parser/archive/refs/heads/himanshu-tiwari_sfemu-patch-10.zip -o playground-parser.zip
   unzip playground-parser.zip > /dev/null 2>&1
-  mv playground-parser-main playground-parser
+  mv playground-parser-himanshu-tiwari_sfemu-patch-10 playground-parser
   cd playground-parser
   yarn add tsx
   yarn install
@@ -323,9 +323,9 @@ export YARN_CACHE_FOLDER NPM_CONFIG_CACHE
 install_bins() {
   local node_engine npm_engine yarn_engine npm_version node_version
 
-  node_engine='18.20.2'
+  node_engine='>=18.18.0 <19.0.0'
   npm_engine=$(read_json "$BUILD_DIR/package.json" ".engines.npm")
-  yarn_engine='1.22.22'
+  yarn_engine='>=1.22.19 <=1.22.22'
 
   meta_set "node-version-request" "$node_engine"
   meta_set "npm-version-request" "$npm_engine"
