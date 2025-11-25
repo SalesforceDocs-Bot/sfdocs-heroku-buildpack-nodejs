@@ -137,11 +137,11 @@ get_file_url() {
 # Downloading config files (package.json, yarn.lock) from sfdocs-repo-build-config repo
 download_sfdocs_build_config() {
   export_env_dir "$ENV_DIR"
-  local package_json_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/st/W-19359685-1/package.json"
-  local yarn_lock_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/st/W-19359685-1/yarn.lock"
-  local puge_cache_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/st/W-19359685-1/purge.sh"
-  local file_sync_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/st/W-19359685-1/file-sync.js"
-  local file_npmrc_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/st/W-19359685-1/template/npmrcfile"
+  local package_json_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/mithun/package.json"
+  local yarn_lock_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/mithun/yarn.lock"
+  local puge_cache_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/mithun/purge.sh"
+  local file_sync_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/mithun/file-sync.js"
+  local file_npmrc_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/mithun/template/npmrcfile"
 
   if [[ -z "${SFDOCS_RELEASE_TAG}" ]]; then
     return
