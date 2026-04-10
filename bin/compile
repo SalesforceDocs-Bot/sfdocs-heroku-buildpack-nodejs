@@ -139,9 +139,10 @@ download_sfdocs_build_config() {
   export_env_dir "$ENV_DIR"
   local package_json_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/package.json"
   local yarn_lock_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/yarn.lock"
-  local puge_cache_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/purge.sh"
+  local puge_cache_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/purge.js"
   local file_sync_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/file-sync.js"
   local file_npmrc_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/template/npmrcfile"
+  local file_apply_patches_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/apply-patches.js"
 
   if [[ -z "${SFDOCS_RELEASE_TAG}" ]]; then
     return
@@ -160,9 +161,10 @@ download_sfdocs_build_config() {
 
   download_config_file "${package_json_file_url}" "sfdocs-repo-build-config/package.json"
   download_config_file "${yarn_lock_file_url}" "sfdocs-repo-build-config/yarn.lock"
-  download_config_file "${puge_cache_file_url}" "purge.sh"
+  download_config_file "${puge_cache_file_url}" "sfdocs-repo-build-config/purge.js"
   download_config_file "${file_sync_file_url}" "sfdocs-repo-build-config/file-sync.js"
   download_config_file "${file_npmrc_file_url}" ".npmrc"
+  download_config_file "${file_apply_patches_url}" "sfdocs-repo-build-config/apply-patches.js"
 }
 
 download_sfdocs_build_config
