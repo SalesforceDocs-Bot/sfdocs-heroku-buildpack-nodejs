@@ -133,12 +133,12 @@ get_file_url() {
 # Downloading config files (package.json, yarn.lock) from sfdocs-repo-build-config repo
 download_sfdocs_build_config() {
   export_env_dir "$ENV_DIR"
-  local package_json_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/package.json"
-  local yarn_lock_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/yarn.lock"
-  local puge_cache_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/purge.js"
-  local file_sync_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/file-sync.js"
-  local file_npmrc_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/template/npmrcfile"
-  local file_apply_patches_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/main/apply-patches.js"
+  local package_json_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/sunny/node-22-upgrade/package.json"
+  local yarn_lock_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/sunny/node-22-upgrade/yarn.lock"
+  local puge_cache_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/sunny/node-22-upgrade/purge.js"
+  local file_sync_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/sunny/node-22-upgrade/file-sync.js"
+  local file_npmrc_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/sunny/node-22-upgrade/template/npmrcfile"
+  local file_apply_patches_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/sunny/node-22-upgrade/apply-patches.js"
 
   if [[ -z "${SFDOCS_RELEASE_TAG}" ]]; then
     return
