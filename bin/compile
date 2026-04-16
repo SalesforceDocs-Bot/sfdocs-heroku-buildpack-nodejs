@@ -105,10 +105,73 @@ handle_failure() {
 }
 trap 'handle_failure' ERR
 
+# Downloading the file using curl command.
+download_config_file(){
+  local file_url="${1}"
+  local file_name="${2}"
+
+  local config_file_url=$(get_file_url "${file_url}")
+  local code=$(curl "${config_file_url}" -L --silent --fail --retry 5 --retry-max-time 15 -H "Authorization: token ${SFDOCS_CONFIG_TOKEN}" -H "Accept: application/vnd.github.v3.raw" -o "${BUILD_DIR}/${file_name}" --write-out "%{http_code}")
+
+  if [[ "$code" == "200" ]]; then
+    echo "200 - Successfully downloaded ${file_name} file."
+  else
+    echo "${code} - Unable to download ${file_name} file!"
+    fail_to_download_file ${file_name}
+  fi
+}
+
+get_file_url() {
+  local url=$1
+  if [[ "${SFDOCS_RELEASE_TAG}" == "prod" ]]; then
+    echo "$url"
+  elif [[ "${SFDOCS_RELEASE_TAG}" == "dev" ]]; then
+    echo "$url?ref=dev"
+  fi
+}
+
+# Downloading config files (package.json, yarn.lock) from sfdocs-repo-build-config repo
+download_sfdocs_build_config() {
+  export_env_dir "$ENV_DIR"
+  local branch="main"
+  local package_json_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/${branch}/package.json"
+  local yarn_lock_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/${branch}/yarn.lock"
+  local puge_cache_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/${branch}/purge.js"
+  local file_sync_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/${branch}/file-sync.js"
+  local file_npmrc_file_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/${branch}/template/npmrcfile"
+  local file_apply_patches_url="https://raw.githubusercontent.com/salesforcedocs/sfdocs-repo-build-config/${branch}/apply-patches.js"
+
+  if [[ -z "${SFDOCS_RELEASE_TAG}" ]]; then
+    return
+  fi
+  # Removing yarn.lock that comes from repo before downloading 
+  # it from sfdocs-repo-build-config
+  rm -f $BUILD_DIR/yarn.lock
+
+  # Create a 0 byte yarn.lock to tell heroku-prebuild and subsequent steps that we use yarn or set YARN=true at line#161
+  # touch $BUILD_DIR/yarn.lock
+
+  # Creating a directory before dowloading the configuration from sfdocs-repo-build-config github repository
+  mkdir -p ${BUILD_DIR}/sfdocs-repo-build-config
+
+  echo "Downloading config files for the Sfdocs release tag: ${SFDOCS_RELEASE_TAG}"
+
+  download_config_file "${package_json_file_url}" "sfdocs-repo-build-config/package.json"
+  download_config_file "${yarn_lock_file_url}" "sfdocs-repo-build-config/yarn.lock"
+  download_config_file "${puge_cache_file_url}" "sfdocs-repo-build-config/purge.js"
+  download_config_file "${file_sync_file_url}" "sfdocs-repo-build-config/file-sync.js"
+  download_config_file "${file_npmrc_file_url}" ".npmrc"
+  download_config_file "${file_apply_patches_url}" "sfdocs-repo-build-config/apply-patches.js"
+}
+
+download_sfdocs_build_config
+
+
 ### Check initial state
 
 [ -e "$BUILD_DIR/node_modules" ] && PREBUILD=true || PREBUILD=false
 [ -f "$BUILD_DIR/yarn.lock" ] && YARN=true || YARN=false
+YARN=true
 [ -f "$BUILD_DIR/package-lock.json" ] && NPM_LOCK=true || NPM_LOCK=false
 [ -f "$BUILD_DIR/pnpm-lock.yaml" ] && PNPM=true || PNPM=false
 YARN_2=$(detect_yarn_2 "$YARN" "$BUILD_DIR")
