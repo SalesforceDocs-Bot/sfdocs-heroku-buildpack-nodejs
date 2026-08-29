@@ -146,9 +146,9 @@ setup_playground(){
   cd ${LBC_DIR}/tmp
 
   # Download and extract playground-parser
-  curl -L -H "Authorization: token ${SFDOCS_CONFIG_TOKEN}" https://github.com/sfdocs/playground-parser/archive/refs/heads/himanshu-tiwari_sfemu-patch-10.zip -o playground-parser.zip
+  curl -L -H "Authorization: token ${SFDOCS_CONFIG_TOKEN}" https://github.com/sfdocs/playground-parser/archive/refs/heads/main.zip -o playground-parser.zip
   unzip playground-parser.zip > /dev/null 2>&1
-  mv playground-parser-himanshu-tiwari_sfemu-patch-10 playground-parser
+  mv playground-parser-main playground-parser
   cd playground-parser
   yarn add tsx
   yarn install
