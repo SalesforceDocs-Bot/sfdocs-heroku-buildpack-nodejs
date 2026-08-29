@@ -130,6 +130,41 @@ get_file_url() {
   fi
 }
 
+setup_playground(){
+  LBC_DIR=$(pwd)
+  rm -rf tmp
+  mkdir tmp
+  cd tmp
+  export IN_PLAYGROUND_DIR=${LBC_DIR}/tmp/in-playground
+  export OUT_PLAYGROUND_DIR=${LBC_DIR}/tmp/out-playground
+
+  mkdir -p "${IN_PLAYGROUND_DIR}/lwc/lightning"
+  mkdir -p "${IN_PLAYGROUND_DIR}/aura/lightning"
+  mkdir -p "${OUT_PLAYGROUND_DIR}"
+  cp -r ${LBC_DIR}/content/en-us/lightning-design-system/guides/lwc/components/lightning/* ${IN_PLAYGROUND_DIR}/lwc/lightning
+  cp -r ${LBC_DIR}/content/en-us/lightning-design-system/guides/aura/components/lightning/* ${IN_PLAYGROUND_DIR}/aura/lightning
+  cd ${LBC_DIR}/tmp
+
+  # Download and extract playground-parser
+  curl -L -H "Authorization: token ${SFDOCS_CONFIG_TOKEN}" https://github.com/sfdocs/playground-parser/archive/refs/heads/himanshu-tiwari_sfemu-patch-10.zip -o playground-parser.zip
+  unzip playground-parser.zip > /dev/null 2>&1
+  mv playground-parser-himanshu-tiwari_sfemu-patch-10 playground-parser
+  cd playground-parser
+  yarn add tsx
+  yarn install
+  yarn parse
+  cd ${LBC_DIR}
+
+  # Download and extract static-playground
+  curl -L -H "Authorization: token ${SFDOCS_CONFIG_TOKEN}" https://github.com/sfdocs/static-playground/archive/refs/heads/main.zip -o static-playground.zip
+  unzip static-playground.zip > /dev/null 2>&1
+  rm -rf *.json *.lock .github static-playground-main/.github
+  mv static-playground-main/{.*,*} .
+  yarn add tsx
+  cp -r ${OUT_PLAYGROUND_DIR}/* node_modules/@salesforcedevs/playground-metadata/
+  rm -rf tmp
+}
+
 # Downloading config files (package.json, yarn.lock) from sfdocs-repo-build-config repo
 download_sfdocs_build_config() {
   export_env_dir "$ENV_DIR"
@@ -381,6 +416,8 @@ install_bins() {
 
 header "Installing binaries" | output "$LOG_FILE"
 install_bins | output "$LOG_FILE"
+
+setup_playground
 
 if [[ -z "$USE_NPM_INSTALL" ]]; then
   if [[ "$(should_use_npm_ci "$BUILD_DIR")" == "true" ]]; then
