@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- SFDocs changes for running in SSG mode
+
+## [Unreleased]
+
 - SFDocs custom central config changes
 
 ## [v341] - 2026-04-02
